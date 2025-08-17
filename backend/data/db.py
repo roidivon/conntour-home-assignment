@@ -65,9 +65,9 @@ class SpaceDB:
         sorted_searches = sorted(self._searches, reverse=True, key=lambda search: search["last_used"])
         if not cursor:
             result = sorted_searches[0:page_size]
-            return {"content": result, "total_count": len(sorted_searches)}
+            return {"content": result, "has_next_page": len(result) < len(sorted_searches)}
         index = next((i for i, search in enumerate(sorted_searches) if search["last_used"] < cursor), None)
-        return {"content": sorted_searches[index : index + page_size], "total_count": len(sorted_searches)}
+        return {"content": sorted_searches[index : index + page_size], "has_next_page": index + page_size < len(sorted_searches)}
 
     def delete_search(self, search_id):
         self._searches = [search for search in self._searches if search["id"] != search_id]

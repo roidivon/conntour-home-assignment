@@ -37,13 +37,13 @@ export const useSearchHistory = () => {
       initialPageParam: { cursor: '', page_size: PAGE_SIZE },
       getNextPageParam: (_, allPages = []) => {
         const items = allPages.map(({ content }) => content).flat();
-        if (last(allPages)?.total_count === items.length) {
-          return null;
+        if (last(allPages)?.has_next_page) {
+          return {
+            page_size: PAGE_SIZE,
+            cursor: last(items)?.last_used || '',
+          }
         }
-        return {
-          page_size: PAGE_SIZE,
-          cursor: last(items)?.last_used || '',
-        };
+        return null;
       },
     });
   const { mutate: addSearch } = useMutation<Search, void, string>({
@@ -59,13 +59,13 @@ export const useSearchHistory = () => {
           pageParams,
           pages: [
             {
-              total_count: firstPage.total_count + 1,
+              has_next_page: firstPage.has_next_page,
               content: [search].concat(filterPage(firstPage.content)),
             },
           ]
             .concat(
-              rest.map(({ total_count, content }) => ({
-                total_count: total_count + 1,
+              rest.map(({ has_next_page, content }) => ({
+                has_next_page,
                 content: filterPage(content),
               })),
             )
@@ -94,8 +94,8 @@ export const useSearchHistory = () => {
         const filterPage = filterPageByIdFactory(id);
         return {
           pageParams,
-          pages: pages.map(({ content, total_count }) => ({
-            total_count: total_count - 1,
+          pages: pages.map(({ content, has_next_page }) => ({
+            has_next_page,
             content: filterPage(content),
           })),
         };

@@ -11,7 +11,7 @@ export type ImageData = {
 
 export type SearchResult = {
   content: Search[];
-  total_count: number;
+  has_next_page: boolean;
 };
 
 export type Search = {

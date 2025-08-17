@@ -32,7 +32,6 @@ export const SearchList = ({
     return !hasNextPage || index < items.length;
   };
   const loadMoreRows = async () => {
-    debugger;
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
