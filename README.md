@@ -31,6 +31,6 @@
    ```
 3. Start the development server:
    ```bash
-   npm run preview
+   npm run dev
    ```
    The frontend will run on http://localhost:5173
