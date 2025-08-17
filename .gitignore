@@ -1,0 +1,9 @@
+.DS_Store
+.idea/
+
+backend/__pycache__
+backend/.idea
+backend/.venv
+
+frontend/node_modules
+frontend/.idea
